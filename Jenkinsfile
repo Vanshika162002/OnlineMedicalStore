@@ -1,18 +1,13 @@
-node {
-  stage("Clone the project") {
-    git branch: 'main', url: 'https://github.com/Vanshika162002/OnlineMedicalStore.git'
+pipeline {
+  agent any
+  tools {
+    maven 'maven-3.6.3' 
   }
-
-  stage("Compilation") {
-    sh "./mvnw clean install -DskipTests"
-  }
-
-  stage("Tests and Deployment") {
-    stage("Runing unit tests") {
-      sh "./mvnw test -Punit"
-    }
-    stage("Deployment") {
-      sh 'nohup ./mvnw spring-boot:run -Dserver.port=8080 &'
+  stages {
+    stage ('Build') {
+      steps {
+        sh 'mvn clean package'
+      }
     }
   }
 }
